@@ -1,3 +1,5 @@
+
+/* React */
 .App {
   text-align: center;
 }
@@ -35,4 +37,124 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* general */
+.body-div {
+  text-align: center; padding: 10px;
+  background-color: #ff9a57;
+  font-size: 20px;
+}
+
+.content {
+  text-align: center; 
+  width: 700px;
+}
+
+.myB {
+  margin: 5px;
+}
+
+
+.subtitle {  
+  color: #240200;
+  font-weight: bold;
+  margin: 15px;
+}
+
+button {
+  margin-bottom: 20px;
+}
+
+textarea, .textarea {
+  width: 500px; height: 80px;
+}
+
+.joke-text {
+  /* margin: 15px; */
+}
+
+
+/* navbar */
+.more-nav {
+  padding-left: 30px;  padding-right: 30px;
+}
+
+#nav-title {
+  font-family: 'consolas';  /*font-weight: 2px;*/
+  margin-left: 30px;
+}
+
+.nav-link {}   
+
+
+/* table */
+#resultTable {
+  border-color: grey;
+  border-style: solid;  border-width: 1px;
+  margin: 10px; 
+}
+
+th {
+  background-color: rgb(30, 130, 200);
+  color: white;
+}
+
+.cell1 {  
+  border: 1px solid gray;
+  width: 100px;  padding: 4px;
+  text-align: center;
+}
+
+.cell2 {  
+  border: 1px solid gray;
+  width: 300px; padding: 4px;
+  text-align: center;
+}
+
+/* other */
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  color: blue;
+}
+
+.rating>input {
+  display: none
+}
+
+.rating>label {
+  position: relative;
+  width: 1em;
+  font-size: 30px;
+  font-weight: 300;
+  color: #FFD600;
+  cursor: pointer
+}
+
+.rating>label::before {
+  content: "\2605";
+  position: absolute;
+  opacity: 0
+}
+
+.rating>label:hover:before,
+.rating>label:hover~label:before {
+  opacity: 1 !important
+}
+
+.rating>input:checked~label:before {
+  opacity: 1
+}
+
+.checkbox {
+  color: white;
+  width: 16px; height: 16px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.checkbox-text {
+  
 }
