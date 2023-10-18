@@ -1,5 +1,6 @@
 # DadJoke-website
 Want some dad jokes? 
+![Alt text](src/images/screenshot.png?raw=true "Webseite screenshot")
 
 ## Toolkit
 1. React
