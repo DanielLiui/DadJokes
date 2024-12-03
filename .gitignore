@@ -1,5 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# hide my files/folders
+/other_files/
+/public/.componentTest.html
+
 # dependencies
 /node_modules
 /.pnp
