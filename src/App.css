@@ -1,5 +1,9 @@
 
 /* React */
+:root {
+  --fontSize: 25px;
+}
+
 .App {
   text-align: center;
 }
@@ -47,23 +51,15 @@
 }
 
 .content {
+  padding-top: 20vh;
   text-align: center; 
   width: 700px;
 }
-
-.myB {
-  margin: 5px;
-}
-
 
 .subtitle {  
   color: #240200;
   font-weight: bold;
   margin: 15px;
-}
-
-button {
-  margin-bottom: 20px;
 }
 
 textarea, .textarea {
@@ -72,6 +68,11 @@ textarea, .textarea {
 
 .joke-text {
   /* margin: 15px; */
+  font-size: var(--fontSize);
+}
+
+label {
+  font-size: var(--fontSize);
 }
 
 

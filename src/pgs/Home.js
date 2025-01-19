@@ -22,29 +22,26 @@ function Home() {
   let [error, setError] = useState(null)
   let [joke, setJoke] = useState({})  
   let [guess, setGuess] = useState("")
-  let [seePunchline, setSeeP] = useState(false)
+  let [seePunchline, setSeePunchline] = useState(false)
 
   function getJoke() {
-    setGuess(""); setSeeP(false)
+    setGuess(""); setSeePunchline(false)
     // let jokeD = {id: sample_jokes[0].body.id, type: sample_jokes[0].body.type, 
     // setup: sample_jokes[0].body.setup, punchline: sample_jokes[0].body.punchline}
 
     // console.log("Data rec: " + jokeD)
     // setJoke(jokeD)
 
-    fetch("https://dadjokes-api-g6ps.onrender.com/dadjoke")  //or http://127.0.0.1:8000/dadjoke
+    //fetch("https://dadjokes-api-g6ps.onrender.com/dadjoke")  //or http://127.0.0.1:8000/dadjoke
+    fetch("http://127.0.0.1:8000/dadjoke")
     .then(res => {
       if (!res.ok) throw Error('Could not fetch data')
       return res.json(); 
     })
     .then(data => {
-      console.log("Data rec: " + JSON.stringify(data))
-      let fullJokeD = (data.body)[0]
-      let jokeD = {setup: "", punchline: ""}
-      jokeD.setup = fullJokeD.setup; jokeD.punchline = fullJokeD.punchline
-
-      console.log("Joke obj: " + JSON.stringify(jokeD))
-      setJoke(jokeD)
+      joke = data
+      console.log("Data rec: " + JSON.stringify(joke))
+      setJoke(joke)
       setError(null)
     })
     .catch(err => {
@@ -55,18 +52,20 @@ function Home() {
   return (
   <div className="row justify-content-center">
   <div className="col-auto content">  
-    <br /> <img src={beardImg} height="70px" alt="" /> <br /><br />
+    <br /> <img src={beardImg} height="150px" alt="" /> <br /><br />
     {error && <p> {error} </p>}
-    <button type="button" className="btn btn-dark" onClick={getJoke}> Tell me a dad joke </button> <br />  
+    <button type="button" className="btn btn-dark btn-lg" onClick={getJoke}> Tell me a dad joke </button> <br />  
+    
     {joke && <div>
       <br /> <p className="joke-text"> {joke.setup} </p> <br />
-      <button type="button" className="btn btn-dark" onClick={()=> setSeeP(true)}> Show punchline </button> <br />
+      <button type="button" className="btn btn-dark btn-lg" onClick={()=> setSeePunchline(true)}> Show punchline </button> <br />
     </div>
     }
+
     {seePunchline && <div>
     <br /> <p className="joke-text"> {joke.punchline} </p> 
     <div className="rating">
-      <input type="radio" name="rating" value="5" id="5" /><label for="5"> ☆ </label> <input type="radio" name="rating" value="4" id="4"/><label for="4"> ☆ </label> <input type="radio" name="rating" value="3" id="3" /><label for="3"> ☆ </label> <input type="radio" name="rating" value="2" id="2" /><label for="2"> ☆ </label> <input type="radio" name="rating" value="1" id="1" /><label for="1"> ☆ </label>
+      <input type="radio" name="rating" value="5" id="5" /><label htmlFor="5"> ☆ </label> <input type="radio" name="rating" value="4" id="4"/><label htmlFor="4"> ☆ </label> <input type="radio" name="rating" value="3" id="3" /><label htmlFor="3"> ☆ </label> <input type="radio" name="rating" value="2" id="2" /><label htmlFor="2"> ☆ </label> <input type="radio" name="rating" value="1" id="1" /><label htmlFor="1"> ☆ </label>
     </div> 
     <label> I don't get it <input type="checkbox" className="checkbox" /> </label>
 
