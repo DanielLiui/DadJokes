@@ -3,15 +3,15 @@ import requests
 from flask_cors import CORS
 from pymongo import MongoClient
 import os
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
+from dotenv import load_dotenv
+load_dotenv()
 import random
 import pprint
 
 app = Flask(__name__)
 CORS(app)
 
-dbPassword = os.environ.get("DB_PASSWORD")
+dbPassword = os.getenv("DB_PASSWORD")
 dbClient = MongoClient(f'mongodb+srv://danielliu545:{dbPassword}@cluster0.n2e59.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', ssl=True)
 dadJokesDB = dbClient["DadJokes"]
 dadJokesColl = dadJokesDB["CustomDadJokes"]  #collection
@@ -79,9 +79,6 @@ def get_dadjoke():
 
 
 if __name__ == "__main__":
-  print("Visit: ")
-  print("http://127.0.0.1:8000/dadjoke")
-  
   try:
     app.run(port=8000, debug=True)
 
