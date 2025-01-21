@@ -32,7 +32,7 @@ function Home() {
     // console.log("Data rec: " + jokeD)
     // setJoke(jokeD)
 
-    fetch("https://dadjokes-api-g6ps.onrender.com/dadjoke")  //or http://127.0.0.1:8000/dadjoke
+    fetch("https://dadjokes-api2.onrender.com")  //or http://127.0.0.1:8000/dadjoke
     //fetch("http://127.0.0.1:8000/dadjoke")
     .then(res => {
       if (!res.ok) throw Error('Could not fetch data')

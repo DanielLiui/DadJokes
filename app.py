@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 dbPassword = os.getenv("DB_PASSWORD")
-dbClient = MongoClient(f'mongodb+srv://danielliu545:{dbPassword}@cluster0.n2e59.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', ssl=True)
+dbClient = MongoClient(f'mongodb+srv://danielliu545:{dbPassword}@cluster0.n2e59.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 dadJokesDB = dbClient["DadJokes"]
 dadJokesColl = dadJokesDB["CustomDadJokes"]  #collection
 customDadJokes = list(dadJokesColl.find())
