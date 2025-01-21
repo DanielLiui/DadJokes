@@ -63,7 +63,7 @@ def test():
 jokeType = 0  #0 = next joke to get is from database, 1 = next joke to get is from API
 
 @app.route("/dadjoke", methods=["GET"])
-def get_dadjoke():
+def getDadJoke():
   global jokeType
   dadJoke = None
 
