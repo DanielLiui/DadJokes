@@ -1,16 +1,16 @@
 # DadJoke-website
-Want some dad jokes? 
-![](screenshot.png?raw=true "Website screenshot")
+https://dadjokes-vsci.onrender.com/
 
 # Toolkit
 1. React
 2. Flask backend
 3. Dad Jokes API: https://rapidapi.com/KegenGuyll/api/dad-jokes/details/ 
+4. MongoDB database of other dad jokes
 
-# Run
+# How to run in an IDE
 1. Setup
 
-Activate virtual environment by running
+Select virtual environment in your IDE or select
 
 Windows terminal:
 > Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
