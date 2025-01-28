@@ -1,4 +1,4 @@
-# DadJoke-website
+# Dad jokes website
 https://dadjokes-vsci.onrender.com/
 
 # Toolkit
