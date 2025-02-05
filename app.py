@@ -11,6 +11,7 @@ import pprint
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
+#Database setup
 dbPassword = os.getenv("DB_PASSWORD")
 dbClient = MongoClient(f'mongodb+srv://danielliu545:{dbPassword}@cluster0.n2e59.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 dadJokesDB = dbClient["DadJokes"]
@@ -25,6 +26,7 @@ for joke in customDadJokes:
   newCustomDadJokes.append(joke)
 
 customDadJokes = newCustomDadJokes
+DADJOKE_API_KEY = os.getenv("DADJOKE_API_KEY")
 
 
 #FUNCTIONS
@@ -32,11 +34,12 @@ def getAPIDadJoke():
   url = "https://dad-jokes.p.rapidapi.com/random/joke"
 
   headers = {
-    "X-RapidAPI-Key": "e3938739a7msh9e96af120838cd6p124f95jsncd04a2b21318",
+    "X-RapidAPI-Key": DADJOKE_API_KEY,
     "X-RapidAPI-Host": "dad-jokes.p.rapidapi.com"
   }
 
   resp = requests.get(url, headers=headers).json()
+  print(str(resp))
   resp = resp['body'][0]
   print("Data rec from API:"); print(resp)
   dadJoke = {'setup': resp['setup'], 'punchline': resp['punchline']}
@@ -69,5 +72,4 @@ if __name__ == "__main__":
 
   finally:
     dbClient.close()
-
 
