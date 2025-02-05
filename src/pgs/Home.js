@@ -18,35 +18,111 @@ let sample_jokes = [
 ]
 
 
+async function getCustomDadJokes() {
+  //fetch("https://dadjokes-api2.onrender.com/dadjoke")  
+  fetch("http://127.0.0.1:8000/customdadjokes").then(res => {
+    if (!res.ok) throw Error('Could not fetch data')
+    return res.json(); 
+  })
+  .then(data => {
+    let jokes = data['customDadJokes']
+    //console.log("Data rec: " + JSON.stringify(joke))
+    return jokes
+  })
+  .catch(err => {
+    console.log(err.message)
+    return null
+  })
+}
+
+
+async function getAPIDadJoke() {
+  //fetch("https://dadjokes-api2.onrender.com/dadjoke")  
+  fetch("http://127.0.0.1:8000/dadjoke").then(res => {
+    if (!res.ok) throw Error('Could not fetch data')
+    return res.json(); 
+  })
+  .then(data => {
+    let joke = data
+    //console.log("Data rec: " + JSON.stringify(joke))
+    return joke
+  })
+  .catch(err => {
+    console.log(err.message)
+    return null
+  })
+}
+
+
+async function getAPIDadJoke2() {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/dadjoke")
+    if (!res.ok) throw new Error('Could not fetch data')
+    const data = await res.json()
+    let joke = data
+    console.log(JSON.stringify(joke))
+    return joke
+  } catch (err) {
+    console.log(err.message)
+    return null
+  }
+}
+
+
+async function getCustomDadJokes2() {
+  try {
+    const res = await fetch("http://127.0.0.1:8000/customdadjokes")
+    if (!res.ok) throw new Error('Could not fetch data')
+    const data = await res.json()
+    let jokes = data['customDadJokes']
+    return jokes
+  } catch (err) {
+    console.log(err.message)
+    return null
+  }
+}
+
+/*
+async function test() {
+  //let dadJoke = await getAPIDadJoke2()
+  let dadJokes = await getCustomDadJokes2()
+  console.log(JSON.stringify(dadJokes))
+}
+*/
+
+
 function Home() {
   let [error, setError] = useState(null)
-  let [joke, setJoke] = useState({})  
-  let [guess, setGuess] = useState("")
+  let [joke, setJoke] = useState({})  //joke is an object with properties {setup: "", punchline: ""}
   let [seePunchline, setSeePunchline] = useState(false)
 
-  function getJoke() {
-    setGuess(""); setSeePunchline(false)
-    // let jokeD = {id: sample_jokes[0].body.id, type: sample_jokes[0].body.type, 
-    // setup: sample_jokes[0].body.setup, punchline: sample_jokes[0].body.punchline}
+  let customDadJokes = []
+  let jokeType = 0
 
-    // console.log("Data rec: " + jokeD)
-    // setJoke(jokeD)
+  //if (customDadJokes == []) customDadJokes = getCustomDadJokes() 
 
-    fetch("https://dadjokes-api2.onrender.com/dadjoke")  
-    //fetch("http://127.0.0.1:8000/dadjoke")
-    .then(res => {
-      if (!res.ok) throw Error('Could not fetch data')
-      return res.json(); 
-    })
-    .then(data => {
-      joke = data
-      console.log("Data rec: " + JSON.stringify(joke))
-      setJoke(joke)
+  async function showJoke() {
+    setSeePunchline(false)
+    const newJoke = await getAPIDadJoke()
+    
+    if (!newJoke || !newJoke.setup) {
+      setError("Something went wrong while fetching the dad joke.")
+      setJoke(null)
+    } else {
       setError(null)
-    })
-    .catch(err => {
-      setError(err.message);
-    })
+      setJoke(newJoke)
+    }
+
+    /*
+    if (jokeType == 0 and customDadJokes) > 0:
+      setJoke(getRandomJoke(customDadJokes))
+      jokeType = 1
+
+    else {
+      setJoke(getAPIDadJoke())
+      jokeType = 0
+    }
+    */
   }
   
   return (
@@ -54,7 +130,7 @@ function Home() {
   <div className="col-auto content">  
     <br /> <img src={beardImg} height="150px" alt="" /> <br /><br />
     {error && <p> {error} </p>}
-    <button type="button" className="btn btn-dark btn-lg" onClick={getJoke}> Tell me a dad joke </button> <br />  
+    <button type="button" className="btn btn-dark btn-lg" onClick={showJoke}> Tell me a dad joke </button> <br />  
     
     {joke && <div>
       <br /> <p className="joke-text"> {joke.setup} </p> <br />
@@ -76,3 +152,4 @@ function Home() {
 }
 
 export default Home;
+

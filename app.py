@@ -9,19 +9,22 @@ import random
 import pprint
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
 dbPassword = os.getenv("DB_PASSWORD")
 dbClient = MongoClient(f'mongodb+srv://danielliu545:{dbPassword}@cluster0.n2e59.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 dadJokesDB = dbClient["DadJokes"]
 dadJokesColl = dadJokesDB["CustomDadJokes"]  #collection
 customDadJokes = list(dadJokesColl.find())
-  
-'''
+
+#remove obj id field
+newCustomDadJokes = []  
+
 for joke in customDadJokes:
-  #pprint.pprint(joke)
-  print(joke)
-'''
+  joke = {'setup': joke['setup'], 'punchline': joke['punchline']}
+  newCustomDadJokes.append(joke)
+
+customDadJokes = newCustomDadJokes
 
 
 #FUNCTIONS
@@ -40,16 +43,6 @@ def getAPIDadJoke():
   return dadJoke
 
 
-def getCustomDadJoke():
-  random_i = random.randint(0, len(customDadJokes)-1)
-  dadJoke = customDadJokes.pop(random_i)
-  dadJoke['_id'] = str(dadJoke['_id'])
-  return dadJoke
-
-
-#print(getAPIDadJoke())
-
-
 #ROUTES
 @app.route("/test", methods=["POST"])
 def test():
@@ -60,22 +53,14 @@ def test():
   return jsonify(resp)
 
 
-jokeType = 0  #0 = next joke to get is from database, 1 = next joke to get is from API
-
 @app.route("/dadjoke", methods=["GET"])
 def getDadJoke():
-  global jokeType
-  dadJoke = None
+  return jsonify(getAPIDadJoke())  
 
-  if jokeType == 0 and len(customDadJokes) > 0:
-    dadJoke = getCustomDadJoke()
-    jokeType = 1
 
-  else:
-    dadJoke = getAPIDadJoke()
-    jokeType = 0
-
-  return jsonify(dadJoke)  
+@app.route("/customdadjokes", methods=["GET"])
+def getCustomDadJokes():
+  return jsonify({'customDadJokes': customDadJokes})  
 
 
 if __name__ == "__main__":
@@ -84,3 +69,5 @@ if __name__ == "__main__":
 
   finally:
     dbClient.close()
+
+
