@@ -1,6 +1,8 @@
 # Dad jokes website
 https://dadjokes-vsci.onrender.com/
 
+The website displays dad jokes from an API and a custom MongoDB database (alternates).
+
 # Toolkit
 1. React
 2. Flask backend
@@ -8,26 +10,7 @@ https://dadjokes-vsci.onrender.com/
 4. MongoDB database of other dad jokes
 
 # How to run in an IDE
-1. Setup
-
-Select virtual environment in your IDE or select
-
-Windows terminal:
-> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-> .venv\Scripts\activate
-
-Mac terminal:
-> source .venv/bin/activate
-
-Install packages:
-pip install -r requirements.txt
-
-Run backend server:
-> python app.py
-
-Run React and website will open:
-> npm start
-
+Takes quite a few steps, I don't recommend running it locally.
 
 
 
