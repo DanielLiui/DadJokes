@@ -1,155 +1,138 @@
+import React, { useState, useEffect } from 'react';
+import '../App.css';
+// import { Link } from 'react-router-dom';
+import beardImg from '../images/beard2.png';
 
-
-import React from 'react'
-import '../App.css'
-import {useState} from 'react'
-//import {Link} from 'react-router-dom'
-import beardImg from '../images/beard2.png'
-
-
-let sample_jokes = [
-{'success': true, 
- 'body': [{'_id': '60dd3603c701d87a2906fb7f', 'setup': 'Last time I was in jail I felt like a crop field in 1860', 
-'punchline': 'Cause I was being plowed by black guys all day long', 
-'type': 'crop', 'likes': [], 'author': {'name': 'unknown', 'id': ""}, 
-'approved': true, 'date': 1618108661, 'NSFW': false, 
-'shareableLink': 'https://dadjokes.io/joke/60dd3603c701d87a2906fb7f'}]
-}
-]
-
-
-async function getCustomDadJokes() {
-  //fetch("https://dadjokes-api2.onrender.com/dadjoke")  
-  fetch("http://127.0.0.1:8000/customdadjokes").then(res => {
-    if (!res.ok) throw Error('Could not fetch data')
-    return res.json(); 
-  })
-  .then(data => {
-    let jokes = data['customDadJokes']
-    //console.log("Data rec: " + JSON.stringify(joke))
-    return jokes
-  })
-  .catch(err => {
-    console.log(err.message)
-    return null
-  })
-}
-
+const port = "https://dadjokes-api2.onrender.com"
+//const port = "http://127.0.0.1:8000"
 
 async function getAPIDadJoke() {
-  //fetch("https://dadjokes-api2.onrender.com/dadjoke")  
-  fetch("http://127.0.0.1:8000/dadjoke").then(res => {
-    if (!res.ok) throw Error('Could not fetch data')
-    return res.json(); 
-  })
-  .then(data => {
-    let joke = data
-    //console.log("Data rec: " + JSON.stringify(joke))
-    return joke
-  })
-  .catch(err => {
-    console.log(err.message)
-    return null
-  })
-}
-
-
-async function getAPIDadJoke2() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/dadjoke")
-    if (!res.ok) throw new Error('Could not fetch data')
-    const data = await res.json()
-    let joke = data
-    console.log(JSON.stringify(joke))
-    return joke
+    const res = await fetch(port + "/dadjoke")
+    if (!res.ok) throw new Error("Could not fetch data")
+    return await res.json()
+
   } catch (err) {
-    console.log(err.message)
+    console.error(err.message)
     return null
   }
 }
 
-
-async function getCustomDadJokes2() {
+async function getCustomDadJokes() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/customdadjokes")
-    if (!res.ok) throw new Error('Could not fetch data')
+    const res = await fetch(port + "/customdadjokes")
+    if (!res.ok) throw new Error("Could not fetch data")
     const data = await res.json()
-    let jokes = data['customDadJokes']
-    return jokes
+    return data.customDadJokes || []  //{'setup': '', 'punchline': ''}
+
   } catch (err) {
-    console.log(err.message)
-    return null
+    console.error(err.message)
+    return []
   }
 }
 
-/*
-async function test() {
-  //let dadJoke = await getAPIDadJoke2()
-  let dadJokes = await getCustomDadJokes2()
-  console.log(JSON.stringify(dadJokes))
+
+function randomCustomDadJoke(dadJokes) {
+  if (dadJokes.length == 0) return null
+
+  let random_i = Math.floor(Math.random() * dadJokes.length)
+  let joke = dadJokes[random_i]
+  dadJokes.splice(random_i, 1)
+  return joke
 }
-*/
 
 
 function Home() {
-  let [error, setError] = useState(null)
-  let [joke, setJoke] = useState({})  //joke is an object with properties {setup: "", punchline: ""}
-  let [seePunchline, setSeePunchline] = useState(false)
+  const [error, setError] = useState(null)
+  const [joke, setJoke] = useState(null)
+  const [fetchingJoke, setFetchingJoke] = useState(false)
+  const [seePunchline, setSeePunchline] = useState(false)
+  const [customDadJokes, setCustomDadJokes] = useState([])
+  const [jokeType, setJokeType] = useState(0)
 
-  let customDadJokes = []
-  let jokeType = 0
+  //get custom dad jokes only when browser loads
+  useEffect(() => {
+    async function fetchJokes() {
+      const jokes = await getCustomDadJokes()
+      setCustomDadJokes(jokes)
+    }
+    fetchJokes()
+  }, [])
 
-  //if (customDadJokes == []) customDadJokes = getCustomDadJokes() 
 
   async function showJoke() {
     setSeePunchline(false)
-    const newJoke = await getAPIDadJoke()
-    
-    if (!newJoke || !newJoke.setup) {
-      setError("Something went wrong while fetching the dad joke.")
-      setJoke(null)
-    } else {
-      setError(null)
-      setJoke(newJoke)
-    }
-
-    /*
-    if (jokeType == 0 and customDadJokes) > 0:
-      setJoke(getRandomJoke(customDadJokes))
-      jokeType = 1
-
-    else {
-      setJoke(getAPIDadJoke())
-      jokeType = 0
-    }
-    */
-  }
+    setJoke(null);  let newJoke = null; 
+    setFetchingJoke(true)
   
+    if (jokeType === 0 && customDadJokes.length > 0) {
+      newJoke = randomCustomDadJoke(customDadJokes)
+      setJokeType(1)
+    } 
+    else {
+      newJoke = await getAPIDadJoke()
+      setJokeType(0)
+    }
+
+    if (!newJoke || !newJoke.setup) {
+      setJoke(null)
+      setFetchingJoke(false); setError("Error fetching dad joke")
+    } 
+    else {
+      setJoke(newJoke)
+      setFetchingJoke(false); setError(null)
+    }
+  }
+
   return (
   <div className="row justify-content-center">
-  <div className="col-auto content">  
-    <br /> <img src={beardImg} height="150px" alt="" /> <br /><br />
-    {error && <p> {error} </p>}
-    <button type="button" className="btn btn-dark btn-lg" onClick={showJoke}> Tell me a dad joke </button> <br />  
-    
-    {joke && <div>
-      <br /> <p className="joke-text"> {joke.setup} </p> <br />
-      <button type="button" className="btn btn-dark btn-lg" onClick={()=> setSeePunchline(true)}> Show punchline </button> <br />
+    <div className="col-auto content">
+      <br />
+      <img src={beardImg} height="150px" alt="Beard Logo" />
+      <br /><br />
+      <button type="button" className="btn btn-dark btn-lg" onClick={showJoke}>
+        Tell me a dad joke
+      </button>
+      <br />
+
+      {/* if joke is available, display the joke's setup */}
+      {joke && (
+      <div> <br />
+      {error && <p className="error-text">{error}</p>}
+      <p className="joke-text">{joke.setup}</p> <br />
+      <button type="button" className="btn btn-dark btn-lg" onClick={() => setSeePunchline(true)}>
+        Show punchline
+      </button> <br />
+      </div>
+      )}
+
+      {/* if fetching, display loading animation */}
+      {fetchingJoke && <div className="loader-div">
+      <div className="loader"></div>
+      </div>
+      }
+      
+      {/* if user clicks Show punchline button and joke is available, display the punchline */}
+      {seePunchline && joke && (
+      <div>
+      <br />
+      <p className="joke-text">{joke.punchline}</p>
+      <div className="rating">
+        {[5, 4, 3, 2, 1].map((num) => (
+        <React.Fragment key={num}>
+          <input type="radio" name="rating" value={num} id={num.toString()} />
+          <label htmlFor={num.toString()}>☆</label>
+        </React.Fragment>
+        ))}
+      </div>
+      <label>
+        I don't get it <input type="checkbox" className="checkbox" />
+      </label>
+      </div>
+      )}
     </div>
-    }
-
-    {seePunchline && <div>
-    <br /> <p className="joke-text"> {joke.punchline} </p> 
-    <div className="rating">
-      <input type="radio" name="rating" value="5" id="5" /><label htmlFor="5"> ☆ </label> <input type="radio" name="rating" value="4" id="4"/><label htmlFor="4"> ☆ </label> <input type="radio" name="rating" value="3" id="3" /><label htmlFor="3"> ☆ </label> <input type="radio" name="rating" value="2" id="2" /><label htmlFor="2"> ☆ </label> <input type="radio" name="rating" value="1" id="1" /><label htmlFor="1"> ☆ </label>
-    </div> 
-    <label> I don't get it <input type="checkbox" className="checkbox" /> </label>
-
-    </div>}
   </div>
-  </div>
-  );
-}
+  )
+  }
 
 export default Home;
-

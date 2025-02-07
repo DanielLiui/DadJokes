@@ -4,7 +4,7 @@ import React from 'react'
 import './App.css';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import Test from './pgs/Test'
-import Home from './pgs/Home2' 
+import Home from './pgs/Home' 
 
 
 function App() {
