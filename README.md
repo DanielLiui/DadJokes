@@ -10,42 +10,7 @@ The website displays dad jokes from an API and a custom MongoDB database (altern
 4. MongoDB database of other dad jokes
 
 # How to run in an IDE
-1. Setup
-
-Select virtual environment in your IDE or select
-
-Windows terminal:
-> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-> .venv\Scripts\activate
-
-Mac terminal:
-> source .venv/bin/activate
-
-Install packages:
-pip install -r requirements.txt
-
-Run backend server:
-1. Subscribe to dad jokes API & put API key in a .env file like so:
-
-DADJOKE_API_KEY="..."
-
-app.py will import that key
-
-2. In MongoDB Atlas create a cluster, a collection, and add custom dad jokes with the format
-
-{setup: "...", punchline: ""}
-
-Get the database key and put that in the .env too, like
-
-DB_PASSWORD="..."
-
-This step might take a while
-
-> python app.py
-
-Run React and website will open:
-> npm start
-
+Takes quite a few steps, I don't recommend running it locally.
 
 
 
