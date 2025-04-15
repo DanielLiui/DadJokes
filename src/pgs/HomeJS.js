@@ -42,7 +42,7 @@ function randomCustomDadJoke(dadJokes) {
 }
 
 
-function Home() {
+function HomeJS() {
   const [error, setError] = useState(null)
   const [joke, setJoke] = useState(null)
   const [fetchingJoke, setFetchingJoke] = useState(false)
@@ -135,4 +135,4 @@ function Home() {
   )
   }
 
-export default Home;
+export default HomeJS;
