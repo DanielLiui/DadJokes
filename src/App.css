@@ -94,7 +94,6 @@ label {
 }
 
 .my-button {
-  font-size: 30px;  /* not working */
   margin-bottom: var(--space);
 }
 
