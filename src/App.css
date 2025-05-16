@@ -103,6 +103,10 @@ label {
   margin-bottom: var(--space);
 }
 
+.rating {
+  display: flex;
+  flex-direction: row-reverse;
+}
 
 .rating>input {
   display: none;
