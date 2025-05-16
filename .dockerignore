@@ -1,0 +1,8 @@
+# hide my files/folders
+.env
+other_files
+public/.componentTest.html
+src/components
+
+# dependencies
+node_modules

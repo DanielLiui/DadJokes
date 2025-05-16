@@ -37,8 +37,8 @@ async function getCustomDadJokes(): Promise<DadJoke[]> {
 function randomCustomDadJoke(dadJokes: DadJoke[]): DadJoke | null {
   if (dadJokes.length === 0) return null;
 
-  const randomIndex = Math.floor(Math.random() * dadJokes.length);
-  const joke = dadJokes[randomIndex];
+  const randomIndex: number = Math.floor(Math.random() * dadJokes.length);
+  const joke: DadJoke = dadJokes[randomIndex];
   dadJokes.splice(randomIndex, 1);
   return joke;
 }
@@ -86,58 +86,53 @@ function Home(): JSX.Element {
   }
 
   return (
-    <div className="row justify-content-center">
-      <div className="col-auto content">
-        <br />
-        <img src={beardImg} height="150px" alt="Beard Logo" />
-        <br /><br />
-        <button type="button" className="btn btn-dark btn-lg" onClick={showJoke}>
-          Tell me a dad joke
-        </button>
-        <br />
+  <div className="body-div">
+    <div className="content-div">
+      <img src={beardImg} alt="Beard Logo" id="beard-logo"/>
+      <button type="button" className="btn btn-dark my-button" onClick={showJoke}>
+        Tell me a dad joke
+      </button>
 
-        {/* If joke is available, display the joke's setup */}
-        {joke && (
-          <div>
-            <br />
-            {error && <p className="error-text">{error}</p>}
-            <p className="joke-text">{joke.setup}</p>
-            <br />
-            <button type="button" className="btn btn-dark btn-lg" onClick={() => setSeePunchline(true)}>
-              Show punchline
-            </button>
-            <br />
-          </div>
-        )}
+      {/* If joke is available, display the joke's setup */}
+      {joke && (
+        <div className="insertion-div">
+          {error && <p className="error-text">{error}</p>}
+          <p className="joke-text">{joke.setup}</p>
 
-        {/* If fetching, display loading animation */}
-        {fetchingJoke && (
-          <div className="loader-div">
-            <div className="loader"></div>
-          </div>
-        )}
+          <button type="button" className="btn btn-dark" onClick={() => setSeePunchline(true)}>
+            Show punchline
+          </button>
+          <br />
+        </div>
+      )}
 
-        {/* If user clicks Show punchline button and joke is available, display the punchline */}
-        {seePunchline && joke && (
-          <div>
-            <br />
-            <p className="joke-text">{joke.punchline}</p>
-            <div className="rating">
-              {[5, 4, 3, 2, 1].map((num) => (
-                <React.Fragment key={num}>
-                  <input type="radio" name="rating" value={num} id={num.toString()} />
-                  <label htmlFor={num.toString()}>☆</label>
-                </React.Fragment>
-              ))}
-            </div>
-            <label>
-              I don't get it <input type="checkbox" className="checkbox" />
-            </label>
+      {/* If fetching, display loading animation */}
+      {fetchingJoke && (
+        <div className="loader-div">
+          <div className="loader"></div>
+        </div>
+      )}
+
+      {/* If user clicks Show punchline button and joke is available, display the punchline */}
+      {seePunchline && joke && (
+        <div className="insertion-div">
+          <p className="joke-text">{joke.punchline}</p>
+          <div className="rating">
+            {[5, 4, 3, 2, 1].map((num) => (
+              <React.Fragment key={num}>
+                <input type="radio" name="rating" value={num} id={num.toString()} />
+                <label htmlFor={num.toString()}>☆</label>
+              </React.Fragment>
+            ))}
           </div>
-        )}
-      </div>
+          <label>
+            I don't get it <input type="checkbox" className="checkbox" />
+          </label>
+        </div>
+      )}
     </div>
-  );
+  </div>
+  )
 }
 
 export default Home;
